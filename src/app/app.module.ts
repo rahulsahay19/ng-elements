@@ -1,16 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
+import { NgModule, Injector } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
+import { GreeterComponent } from './greeter/greeter.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+   GreeterComponent
   ],
   imports: [
     BrowserModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [GreeterComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private injector: Injector){
+
+  }
+
+  //In case of angular elements, we need to bootstrap manually
+  ngDoBootstrap(){
+    var el = createCustomElement(GreeterComponent,{injector:this.injector});
+
+    customElements.define('app-greeter', el);
+  }
+}
